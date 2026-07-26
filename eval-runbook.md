@@ -273,6 +273,45 @@ cd cost-ledger && set -a && source ../.env && set +a
   而非顶层（callback.py 的 `_extract_tags` 两处都找，防版本漂移）
 - 原则：JSONL 只存 token 计数不存美元；实验间对比冻结同一份 PRICE_TABLE
 
+## 9. tau3-bench（Sierra，Harbor Hub 数据集）
+
+多轮工具使用 agent bench（tau-bench 续作）：agent 扮演客服，与 **LLM 用户模拟器**多轮
+对话，通过 MCP 工具操作业务系统（airline/retail/telecom 三域，共 375 题）。
+verifier 用 NL assertions + 状态断言判定。
+
+任务结构（Harbor 化后）：
+
+- docker-compose 两个服务：`main`（agent 容器）+ `tau3-runtime`（MCP server，
+  streamable-http），agent 经 MCP 调业务工具
+- agent 超时 3600s，verifier 300s；judge 默认走 OpenAI——但 `task.toml` 里
+  `OPENAI_BASE_URL` / `TAU2_USER_MODEL` / `TAU2_NL_ASSERTIONS_MODEL` 都是可替换环境变量，
+  指到 cost-ledger proxy 即可**全程免真实 OpenAI key**，且用户模拟器和 judge 的
+  token 也全部进账本
+
+跑法（用户模拟器与 judge 也走 proxy 记账）：
+
+```bash
+set -a && source .env && set +a
+export OPENAI_API_KEY=dummy OPENAI_BASE_URL=http://host.docker.internal:4000 \
+       TAU2_USER_MODEL=deepseek-v4-flash TAU2_NL_ASSERTIONS_MODEL=deepseek-v4-flash
+harbor run -d sierra-research/tau3-bench -a mini-swe-agent -m openai/deepseek-v4-flash \
+  -l 3 -n 3 -y --ae OPENAI_BASE_URL=$OPENAI_BASE_URL --ae OPENAI_API_KEY=dummy \
+  --allow-agent-host host.docker.internal
+```
+
+冒烟结果（2026-07-26，3 题，job `jobs/2026-07-26__23-49-38/`，20m20s）：
+
+- **1/3 通过**：tau3-retail-12 reward=1.0；airline-33、telecom-mobile 0.0
+- 账本成本（581 次调用）：**≈$3.47**；fresh input 344k / cache_read 45.5M /
+  output 107.6k（+reasoning 65k）。cache_read 占绝对大头——多轮对话每轮重发全量
+  历史，缓存基线极高，正适合测"memory 净贡献"
+- 分解：judge（verifier 时间窗内）仅 1 次调用 $0.01；agent+用户模拟 580 次 ≈$3.46
+- **已知归因缺陷**：agent 和用户模拟器同模型同端点，ledger 无法区分两者；
+  三题并行时间重叠也无法按题拆分。正式实验要么串行跑，要么给用户模拟器
+  单独一个 proxy 端口/模型别名
+- 数据集已全量下载在 `/tmp/tau3-bench/`（`--allow-agent-host` 的 UserWarning 无害，
+  因网络本来就是 public）
+
 ## 分数可信度提醒（BenchJack 攻击面）
 
 Harbor 默认 agent 和 verifier 同容器共享文件系统：agent 可预写 reward 文件、劫持
