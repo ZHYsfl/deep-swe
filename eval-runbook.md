@@ -386,6 +386,29 @@ harbor run -d tmax/TMax-15K-Harbor -a mini-swe-agent -m openai/deepseek-v4-flash
 - 注意：这批任务 `allow_internet = true`；超时每题自定（task_000996 是 agent 600s /
   verifier 120s），跑大规模时注意任务间配置不一致
 
+## 11. swe-bench/swe-smith 冒烟（Harbor Hub）
+
+Hub 上 100 题（完整版可用 SWE-smith 管线生成 50k）。每题 = 某 repo 某 commit 上的
+一个程序化合成破损（bug 注入），verifier 跑 repo 原测试。同 repo 同 commit 的题
+共享同一镜像。
+
+```bash
+harbor run -d swe-bench/swe-smith -a mini-swe-agent -m openai/deepseek-v4-flash \
+  -l 3 -n 3 -y --ae OPENAI_BASE_URL=http://host.docker.internal:4000 --ae OPENAI_API_KEY=dummy \
+  --allow-agent-host host.docker.internal
+```
+
+冒烟结果（2026-07-27，job `jobs/2026-07-27__01-31-44/`，6m23s）：
+
+- `-l 3` 正好抽中同 repo（oauthlib @ 1fd52536）的三个不同合成破损——
+  **"同环境、不同任务"的最小复用单元**，经验复用实验的理想结构
+- **1/3 通过**（mean 0.333），无 harness 异常
+- 成本：67 次调用 **$0.011**（fresh 34k / cache_read 605k / output 18k），≈$0.004/题
+- 镜像共享实锤：三题容器同时起，没有 TMax 那种逐题构建；SWE-bench 系镜像是
+  预构建拉取式，首次拉取后秒级启动
+- 数据集结构提示：任务名 `repo__commit.combine_file__<hash>`，按名字前缀即可
+  聚类出"同 repo 任务簇"做 episode 序列
+
 ## 分数可信度提醒（BenchJack 攻击面）
 
 Harbor 默认 agent 和 verifier 同容器共享文件系统：agent 可预写 reward 文件、劫持
