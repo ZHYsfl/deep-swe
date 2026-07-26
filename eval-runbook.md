@@ -229,6 +229,18 @@ uv run auto-bench --model deepseek-v4-flash \
   前缀）。实证了"成本递减"研究必须扣掉缓存基线——memory 的净贡献 = 有 memory 组
   vs 无 memory 同序组的成本差
 
+**50 题无 memory 基线（exp001-nomem，2026-07-26，sales 域 1-50，经 cost-ledger）**：
+
+- **pass 6/50（12%），partial credit 37%**，7m23s，1120 次模型调用（≈22 次/题）
+- 真实成本（ledger 价格表）：**$2.21**；fresh input 仅 1.13M（5%），cache_read 21.16M（95%）
+- 对账：ledger 与 auto-bench 导出的 cache_read **完全一致**（21,158,400），
+  input 口径有差异（auto-bench 的 input 字段与其 cached 字段不满足加和关系，以 ledger 为准）。
+  原因已定位：auto-bench 的 input/output 走 turn 级钩子（env_response 时取 trajectory
+  最后一条 response 的 usage），会丢掉每题**最后一次**模型调用（终局后无 env_response）；
+  cached 走 client 级钩子不丢。50 题共丢 1.46M prompt token（≈50 × 2.9 万），
+  且丢的 ~99% 是缓存部分 → 表现为 50/50 题 cached > input。proxy 层账本无此缺陷
+- 导出：`visualizer/runs/local/deepseek-v4-flash-20260726-232810-328.json`
+
 ### usage/pricing 模块设计学习（automationbench/usage.py、pricing.py）
 
 - 采集：挂在 `verifiers` 框架的 env_response 钩子上，每轮从原始 API response 的
