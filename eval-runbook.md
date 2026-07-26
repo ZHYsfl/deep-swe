@@ -163,8 +163,12 @@ uvx --from mini-swe-agent --with programbench mini-extra programbench \
 - **termigen/termigen-environments**（3566 题，UCSB，11 个类别）：TMax 同族终端任务，
   全部环境经过验证（arXiv 2602.07274）。类别标签适合做域内复用切片；
   终端题成本实测极低（TMax $0.002/题）。注意 intricate 题镜像构建慢，先 warm build。
-- **userbench/UserBench**（620 题，含 train400 变体）：tau3 同族多轮用户模拟，
-  量多一倍，可给多轮场景补统计功效。
+- ~~userbench/UserBench~~（620 题，2026-07-27 冒烟后排除）：测的是**用户模拟**——给一段
+  真实 developer+coding agent 的对话历史，预测 developer 下一条消息（taxonomy
+  多标签 jaccard 打分），不是 agentic 任务。更致命的是 Harbor 版 judge 写死
+  `composer-2.5` + cursor-agent 后端，**必须 CURSOR_API_KEY**，没有就只能记 0 分
+  （verifier 输出 `ERROR: CURSOR_API_KEY unset`，agent 预测其实接近 gold 也白搭）。
+  冒烟 job `jobs/2026-07-27__01-42-07/`（3 题 3m37s，26 次调用）。
 - **abundant/swe-gen-{rust,go,java,js,cpp}**（各 ~1000 题）：swe-marathon 同门，
   按语言切片的生成式 SWE 任务。
 
