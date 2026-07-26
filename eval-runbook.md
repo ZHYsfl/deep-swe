@@ -232,7 +232,9 @@ uv run auto-bench --model deepseek-v4-flash \
 **50 题无 memory 基线（exp001-nomem，2026-07-26，sales 域 1-50，经 cost-ledger）**：
 
 - **pass 6/50（12%），partial credit 37%**，7m23s，1120 次模型调用（≈22 次/题）
-- 真实成本（ledger 价格表）：**$2.21**；fresh input 仅 1.13M（5%），cache_read 21.16M（95%）
+- 真实成本（ledger 价格表，DeepSeek 官方刊例价）：**$0.32**（曾用占位价算得 $2.21，
+  2026-07-26 按官网 ¥1/¥0.02/¥2 每百万 token 修正）；fresh input 仅 1.13M（5%），
+  cache_read 21.16M（95%）
 - 对账：ledger 与 auto-bench 导出的 cache_read **完全一致**（21,158,400），
   input 口径有差异（auto-bench 的 input 字段与其 cached 字段不满足加和关系，以 ledger 为准）。
   原因已定位：auto-bench 的 input/output 走 turn 级钩子（env_response 时取 trajectory
@@ -302,10 +304,10 @@ harbor run -d sierra-research/tau3-bench -a mini-swe-agent -m openai/deepseek-v4
 冒烟结果（2026-07-26，3 题，job `jobs/2026-07-26__23-49-38/`，20m20s）：
 
 - **1/3 通过**：tau3-retail-12 reward=1.0；airline-33、telecom-mobile 0.0
-- 账本成本（581 次调用）：**≈$3.47**；fresh input 344k / cache_read 45.5M /
-  output 107.6k（+reasoning 65k）。cache_read 占绝对大头——多轮对话每轮重发全量
+- 账本成本（581 次调用，官方刊例价）：**≈$0.22**（占位价曾算得 $3.47）；
+  fresh input 344k / cache_read 45.5M / output 107.6k（+reasoning 65k）。cache_read 占绝对大头——多轮对话每轮重发全量
   历史，缓存基线极高，正适合测"memory 净贡献"
-- 分解：judge（verifier 时间窗内）仅 1 次调用 $0.01；agent+用户模拟 580 次 ≈$3.46
+- 分解：judge（verifier 时间窗内）仅 1 次调用 <$0.01；agent+用户模拟 580 次 ≈$0.22
 - **已知归因缺陷**：agent 和用户模拟器同模型同端点，ledger 无法区分两者；
   三题并行时间重叠也无法按题拆分。正式实验要么串行跑，要么给用户模拟器
   单独一个 proxy 端口/模型别名
