@@ -1,0 +1,1002 @@
+{
+"terminal-bench/terminal-bench-2-1": [
+"Public",
+89
+],
+"swe-bench/swe-bench-verified": [
+"Public",
+500
+],
+"terminal-bench/terminal-bench-2": [
+"Public",
+89
+],
+"harbor/hello-world": [
+"Public",
+1
+],
+"scale-ai/swe-bench-pro": [
+"Public",
+731
+],
+"harbor-index/harbor-index-1.0": [
+"Public",
+82
+],
+"datacurve/deep-swe": [
+"Public",
+113
+],
+"snorkel-ai/senior-swe-bench-v2026.06": [
+"Public",
+50
+],
+"benchflow/skillsbench": [
+"Public",
+87
+],
+"vmax-modal/modal-port-v1-eval-patched": [
+"Public",
+427
+],
+"Enterprise-Bench/l1-l2-bench": [
+"Public",
+14
+],
+"frontier-bench/frontier-bench": [
+"Public",
+74
+],
+"terminal-bench/terminal-bench-3": [
+"Public",
+75
+],
+"aider/aider-polyglot": [
+"Public",
+225
+],
+"sierra-research/tau3-bench": [
+"Public",
+375
+],
+"terminal-bench-pro/terminal-bench-pro": [
+"Public",
+200
+],
+"tmax/TMax-15K-Harbor": [
+"Public",
+14601
+],
+"abundant/swe-marathon": [
+"Public",
+20
+],
+"scale-ai/swe-atlas-qna": [
+"Public",
+124
+],
+"tencent/autocodebench": [
+"Public",
+200
+],
+"harbor-index/harbor-index": [
+"Public",
+80
+],
+"gabeorlanski/slopcodebench": [
+"Public",
+36
+],
+"gaia/gaia": [
+"Public",
+165
+],
+"android-bench/android-bench": [
+"Public",
+100
+],
+"arcprize/arc-agi-2": [
+"Public",
+167
+],
+"NovitaAI/tb21-file-recovery": [
+"Public",
+9
+],
+"userbench/UserBench": [
+"Public",
+620
+],
+"openthoughts/openthoughts-tblite": [
+"Public",
+100
+],
+"quesma/compilebench": [
+"Public",
+15
+],
+"aime/aime": [
+"Public",
+60
+],
+"dbt-labs/ade-bench": [
+"Public",
+48
+],
+"harveyai/lab": [
+"Public",
+1251
+],
+"NovitaAI/tb21-data-science": [
+"Public",
+26
+],
+"swe-rebench/swe-rebench-leaderboard": [
+"Public",
+860
+],
+"vmax-modal/modal-port-v1-train-patched": [
+"Public",
+1702
+],
+"gpqa-diamond/gpqa-diamond": [
+"Public",
+198
+],
+"scale-ai/swe-atlas-tw": [
+"Public",
+90
+],
+"tinycomputerai/bun-server-bench": [
+"Public",
+50
+],
+"factory-ai/legacy-bench": [
+"Public",
+10
+],
+"orinlabs/horizon-public": [
+"Public",
+3
+],
+"punitarani/harvey-labs": [
+"Public",
+1760
+],
+"userbench/UserBench-train400": [
+"Public",
+620
+],
+"futurehouse/labbench": [
+"Public",
+181
+],
+"gnucleus-ai/cad-bench": [
+"Public",
+100
+],
+"kgmon/deepsearchqa": [
+"Public",
+900
+],
+"quesma/otel-bench": [
+"Public",
+26
+],
+"replicationbench/replicationbench": [
+"Public",
+90
+],
+"scale-ai/swe-atlas-rf": [
+"Public",
+70
+],
+"scienceagentbench/scienceagentbench": [
+"Public",
+102
+],
+"sldbench/sldbench": [
+"Public",
+8
+],
+"swe-bench/swe-smith": [
+"Public",
+100
+],
+"aarr/aarri-bench": [
+"Public",
+82
+],
+"actava-ai/chi-bench": [
+"Public",
+78
+],
+"agentic-labs/erp-bench": [
+"Public",
+300
+],
+"bauerjustin/terminal-bench-3-test": [
+"Public",
+64
+],
+"evoeval/evoeval": [
+"Public",
+100
+],
+"islo-labs/reward-hack-bench": [
+"Public",
+8
+],
+"livecodebench/livecodebench": [
+"Public",
+100
+],
+"meta/mlgym-bench": [
+"Public",
+12
+],
+"nvats/codeskills-bench": [
+"Public",
+23
+],
+"pgcodellm/rebench-v2-test": [
+"Public",
+20
+],
+"rounakbende10/rh-swe-bench": [
+"Public",
+357
+],
+"scale-ai/hil-bench": [
+"Public",
+600
+],
+"strongreject/strongreject": [
+"Public",
+150
+],
+"svgap/svgap-reset-release": [
+"Public",
+8
+],
+"vals/financeagent": [
+"Public",
+50
+],
+"webgen-bench/webgen-bench": [
+"Public",
+101
+],
+"abhishek203/task-aw": [
+"Public",
+5
+],
+"abundant/swe-gen-rust": [
+"Public",
+1000
+],
+"ai-forever/harness-bench-fast": [
+"Public",
+231
+],
+"ashantanu/task1_v3_1_stock_research_basket_rolling": [
+"Public",
+8
+],
+"atm-bench/atm-bench-hard-sgm": [
+"Public",
+31
+],
+"bigcode/humanevalfix": [
+"Public",
+164
+],
+"binary-audit/binary-audit": [
+"Public",
+46
+],
+"codepde/codepde": [
+"Public",
+5
+],
+"cookbook/test": [
+"Public",
+1
+],
+"crustbench/crustbench": [
+"Public",
+100
+],
+"deveval/deveval": [
+"Public",
+63
+],
+"featurebench/featurebench-lite": [
+"Public",
+30
+],
+"featurebench/featurebench-lite-modal": [
+"Public",
+30
+],
+"grafana/o11y-bench": [
+"Public",
+63
+],
+"ineqmath/ineqmath": [
+"Public",
+100
+],
+"infra-bench/infra-bench-v1": [
+"Public",
+20
+],
+"islo-labs/reward-hack-bench-control": [
+"Public",
+8
+],
+"ivanleo/agent-search": [
+"Public",
+20
+],
+"lcb/longswebench-32k": [
+"Public",
+3
+],
+"maxbittker/runebench": [
+"Public",
+32
+],
+"NovitaAI/tb21-code-debug": [
+"Public",
+32
+],
+"NovitaAI/tb21-systems-security": [
+"Public",
+22
+],
+"openai/mmmlu": [
+"Public",
+150
+],
+"openthoughts/tasktrove-exp-rpt-exercism-python-v2": [
+"Public",
+133
+],
+"orinlabs/horizon-1-public": [
+"Public",
+3
+],
+"qcircuitbench/qcircuitbench": [
+"Public",
+28
+],
+"rexbench/rexbench": [
+"Public",
+2
+],
+"thetalab/vector-edit-gym": [
+"Public",
+106
+],
+"tmax/TMax-15K-Harbor-trial": [
+"Public",
+12
+],
+"xiaoboai/pawbench": [
+"Public",
+150
+],
+"xlang-ai/osworld-verified": [
+"Public",
+361
+],
+"yanagiorigami/frontier-cs": [
+"Public",
+172
+],
+"adyen/dabstep": [
+"Public",
+450
+],
+"ale/rsi-post-training": [
+"Public",
+6
+],
+"algotune/algotune": [
+"Public",
+154
+],
+"aryaniyaps/lamina-bench": [
+"Public",
+20
+],
+"bauerjustin/tb3-preview-v2": [
+"Public",
+111
+],
+"bigcode/bigcodebench-hard-complete": [
+"Public",
+145
+],
+"camel-ai/seta-env": [
+"Public",
+1376
+],
+"featurebench/featurebench-modal": [
+"Public",
+200
+],
+"gorilla/bfcl": [
+"Public",
+3641
+],
+"gorilla/bfcl_parity": [
+"Public",
+123
+],
+"kumo/kumo-parity": [
+"Public",
+212
+],
+"lamina/product-bench": [
+"Public",
+12
+],
+"mmtb/multimedia-terminalbench": [
+"Public",
+105
+],
+"openai/swe-lancer-diamond-manager": [
+"Public",
+265
+],
+"openthoughts/tasktrove-exp-rpt-curriculum-hard": [
+"Public",
+506
+],
+"quixbugs/quixbugs": [
+"Public",
+80
+],
+"reasoning-gym/reasoning-gym-hard": [
+"Public",
+288
+],
+"rsi-index/post-training": [
+"Public",
+1
+],
+"theagentcompany/theagentcompany": [
+"Public",
+174
+],
+"vmax/vmax-tasks": [
+"Public",
+1043
+],
+"abundant/swe-gen-cpp": [
+"Public",
+999
+],
+"abundant/swe-gen-go": [
+"Public",
+1000
+],
+"abundant/swe-gen-java": [
+"Public",
+1000
+],
+"abundant/swe-gen-js": [
+"Public",
+1000
+],
+"agentscope-ai/pawbench": [
+"Public",
+150
+],
+"apple/mmau": [
+"Public",
+1000
+],
+"cais/swebenchpro": [
+"Public",
+731
+],
+"cmu/refav": [
+"Public",
+1500
+],
+"featurebench/featurebench": [
+"Public",
+200
+],
+"futurehouse/bixbench": [
+"Public",
+205
+],
+"futurehouse/bixbench-cli": [
+"Public",
+205
+],
+"grandsmile/unicode": [
+"Public",
+399
+],
+"kumo/kumo-1": [
+"Public",
+5300
+],
+"kumo/kumo-easy": [
+"Public",
+5050
+],
+"kumo/kumo-hard": [
+"Public",
+250
+],
+"lawbench/lawbench": [
+"Public",
+1000
+],
+"lica-world/gdb": [
+"Public",
+33786
+],
+"LiteCoder/LiteCoder-rl": [
+"Public",
+602
+],
+"MichaelY310/devopsgym": [
+"Public",
+728
+],
+"minnesotanlp/aar": [
+"Public",
+1400
+],
+"openai/simpleqa": [
+"Public",
+4326
+],
+"openai/swe-lancer-diamond-all": [
+"Public",
+463
+],
+"openai/swe-lancer-diamond-ic": [
+"Public",
+198
+],
+"openthoughts/tasktrove-code-contests-noblock": [
+"Public",
+8728
+],
+"openthoughts/tasktrove-exp-flat25-pseudocode-v2": [
+"Public",
+728
+],
+"openthoughts/tasktrove-exp-flat25-speed-bonus-v2": [
+"Public",
+764
+],
+"openthoughts/tasktrove-exp-flat25-stackoverflow-v2": [
+"Public",
+765
+],
+"openthoughts/tasktrove-exp-flat25-subtle-debug-v3": [
+"Public",
+289
+],
+"openthoughts/tasktrove-exp-rle-adversarial": [
+"Public",
+5000
+],
+"openthoughts/tasktrove-exp-rle-detailed-v3": [
+"Public",
+413
+],
+"openthoughts/tasktrove-exp-rle-error-report-v3": [
+"Public",
+261
+],
+"openthoughts/tasktrove-exp-rle-github-issue-v3": [
+"Public",
+264
+],
+"openthoughts/tasktrove-exp-rle-heavy-padding-v2": [
+"Public",
+784
+],
+"openthoughts/tasktrove-exp-rle-minimal-instructions-v3": [
+"Public",
+233
+],
+"openthoughts/tasktrove-exp-rpt-codenet-python-v2": [
+"Public",
+10000
+],
+"openthoughts/tasktrove-exp-rpt-crosscodeeval-csharp-v4": [
+"Public",
+1768
+],
+"openthoughts/tasktrove-exp-rpt-crosscodeeval-java": [
+"Public",
+2139
+],
+"openthoughts/tasktrove-exp-rpt-curriculum-easy": [
+"Public",
+514
+],
+"openthoughts/tasktrove-exp-rpt-curriculum-medium": [
+"Public",
+512
+],
+"openthoughts/tasktrove-exp-rpt-defects4j-v3-v4": [
+"Public",
+216
+],
+"openthoughts/tasktrove-exp-rpt-e2egit-large": [
+"Public",
+5000
+],
+"openthoughts/tasktrove-exp-rpt-e2egit-v2": [
+"Public",
+500
+],
+"openthoughts/tasktrove-exp-rpt-ghactions-v3": [
+"Public",
+9930
+],
+"openthoughts/tasktrove-exp-rpt-issue": [
+"Public",
+4830
+],
+"openthoughts/tasktrove-exp-rpt-methods2test-large-v2": [
+"Public",
+4472
+],
+"openthoughts/tasktrove-exp-rpt-methods2test-large-v3": [
+"Public",
+4472
+],
+"openthoughts/tasktrove-exp-rpt-multifile": [
+"Public",
+4907
+],
+"openthoughts/tasktrove-exp-rpt-nemotron-cpp": [
+"Public",
+5000
+],
+"openthoughts/tasktrove-exp-rpt-nemotron-junit": [
+"Public",
+5000
+],
+"openthoughts/tasktrove-exp-rpt-pr": [
+"Public",
+4793
+],
+"openthoughts/tasktrove-exp-rpt-pr-v2": [
+"Public",
+4793
+],
+"openthoughts/tasktrove-exp-rpt-pymethods2test-large": [
+"Public",
+5000
+],
+"openthoughts/tasktrove-exp-rpt-pymethods2test-v3": [
+"Public",
+500
+],
+"openthoughts/tasktrove-exp-rpt-scaffold-v2": [
+"Public",
+4861
+],
+"openthoughts/tasktrove-exp-rpt-stack-bash-v3": [
+"Public",
+9384
+],
+"openthoughts/tasktrove-exp-rpt-stack-bash-withtests-gpt5mini-v2": [
+"Public",
+8922
+],
+"openthoughts/tasktrove-exp-rpt-stack-bash-withtests-v2": [
+"Public",
+8922
+],
+"openthoughts/tasktrove-exp-rpt-stack-csharp-v5": [
+"Public",
+9485
+],
+"openthoughts/tasktrove-exp-rpt-stack-dockerfile-gpt5mini-v3": [
+"Public",
+4137
+],
+"openthoughts/tasktrove-exp-rpt-stack-dockerfile-v2": [
+"Public",
+497
+],
+"openthoughts/tasktrove-exp-rpt-stack-go-v4": [
+"Public",
+2313
+],
+"openthoughts/tasktrove-exp-rpt-stack-jest-large": [
+"Public",
+5000
+],
+"openthoughts/tasktrove-exp-rpt-stack-jest-v2": [
+"Public",
+500
+],
+"openthoughts/tasktrove-exp-rpt-stack-junit-v6": [
+"Public",
+872
+],
+"openthoughts/tasktrove-exp-rpt-stack-php-large-v6": [
+"Public",
+3789
+],
+"openthoughts/tasktrove-exp-rpt-stack-php-v2-v6": [
+"Public",
+438
+],
+"openthoughts/tasktrove-exp-rpt-stack-pytest-large": [
+"Public",
+5000
+],
+"openthoughts/tasktrove-exp-rpt-stack-pytest-v2": [
+"Public",
+500
+],
+"openthoughts/tasktrove-exp-rpt-stack-ruby-v2": [
+"Public",
+8627
+],
+"openthoughts/tasktrove-exp-rpt-stack-rust-v2": [
+"Public",
+9987
+],
+"openthoughts/tasktrove-exp-rpt-taco-v2": [
+"Public",
+10000
+],
+"openthoughts/tasktrove-exp-rpt-unitsyn-python-large": [
+"Public",
+5000
+],
+"openthoughts/tasktrove-exp-rpt-unitsyn-python-v3": [
+"Public",
+500
+],
+"openthoughts/tasktrove-freelancer-projects-sandboxes-ta-rl-gpt-5-mini-v2": [
+"Public",
+9999
+],
+"openthoughts/tasktrove-freelancer-projects-sandboxes-ta-rl-gpt-5-nano-v2": [
+"Public",
+9999
+],
+"openthoughts/tasktrove-inferredbugs-sandboxes-verifier": [
+"Public",
+9991
+],
+"openthoughts/tasktrove-llm-verifier-freelancer": [
+"Public",
+10000
+],
+"openthoughts/tasktrove-mix-baseline-uniform-v2": [
+"Public",
+3718
+],
+"openthoughts/tasktrove-mix-h1-struggle-zone-v2": [
+"Public",
+3116
+],
+"openthoughts/tasktrove-mix-h10-reward-binary-v2": [
+"Public",
+2862
+],
+"openthoughts/tasktrove-mix-h10-reward-proportional-v2": [
+"Public",
+2873
+],
+"openthoughts/tasktrove-mix-h10-reward-staged-v2": [
+"Public",
+3873
+],
+"openthoughts/tasktrove-mix-h11-compositional-gradient-v2": [
+"Public",
+3873
+],
+"openthoughts/tasktrove-mix-h11-single-skill-only-v2": [
+"Public",
+2873
+],
+"openthoughts/tasktrove-mix-h2-language-balanced-v2": [
+"Public",
+4506
+],
+"openthoughts/tasktrove-mix-h2-language-proportional": [
+"Public",
+4135
+],
+"openthoughts/tasktrove-mix-h4-binary-easy": [
+"Public",
+2010
+],
+"openthoughts/tasktrove-mix-h5-skill-diverse-v2": [
+"Public",
+3166
+],
+"openthoughts/tasktrove-mix-h6-test-quality-top25": [
+"Public",
+2747
+],
+"openthoughts/tasktrove-mix-h7-raw-volume-5k-v2": [
+"Public",
+3718
+],
+"openthoughts/tasktrove-mix-h8-adversarial-tests-v2": [
+"Public",
+2873
+],
+"openthoughts/tasktrove-mix-h8-original-tests-v2": [
+"Public",
+2862
+],
+"openthoughts/tasktrove-nemotron-code-oracle-filtered": [
+"Public",
+15165
+],
+"openthoughts/tasktrove-nemotron-gym-agent-calendar": [
+"Public",
+3358
+],
+"openthoughts/tasktrove-nemotron-gym-agent-workplace-v2": [
+"Public",
+297
+],
+"openthoughts/tasktrove-nemotron-gym-competitive-coding": [
+"Public",
+15713
+],
+"openthoughts/tasktrove-nemotron-gym-identity-following-v2": [
+"Public",
+21660
+],
+"openthoughts/tasktrove-nemotron-gym-instruction-following-adversarial-v3": [
+"Public",
+1000
+],
+"openthoughts/tasktrove-nemotron-gym-instruction-following-calendar": [
+"Public",
+8387
+],
+"openthoughts/tasktrove-nemotron-gym-instruction-following-structured": [
+"Public",
+9437
+],
+"openthoughts/tasktrove-nemotron-gym-instruction-following-v2": [
+"Public",
+46391
+],
+"openthoughts/tasktrove-nemotron-gym-knowledge-web-search-mcqa": [
+"Public",
+2915
+],
+"openthoughts/tasktrove-nemotron-gym-math-advanced-calculations-v3": [
+"Public",
+5291
+],
+"openthoughts/tasktrove-nl2bash-tasks-cleaned-oracle": [
+"Public",
+1570
+],
+"openthoughts/tasktrove-openswe-tasks-patched-v5-oracle-success": [
+"Public",
+17504
+],
+"openthoughts/tasktrove-r2egym-patched-full-oracle": [
+"Public",
+3328
+],
+"openthoughts/tasktrove-selfinstruct-naive-sandboxes-2-verified": [
+"Public",
+9638
+],
+"openthoughts/tasktrove-swe-rebench-patched-oracle": [
+"Public",
+3787
+],
+"openthoughts/tasktrove-swe-rebench-v2-patched-oracle": [
+"Public",
+18341
+],
+"openthoughts/tasktrove-swegym-tasks-patched-validated-v2": [
+"Public",
+989
+],
+"openthoughts/tasktrove-swesmith-oracle-filtered": [
+"Public",
+12942
+],
+"reasoning-gym/reasoning-gym-easy": [
+"Public",
+288
+],
+"satbench/satbench": [
+"Public",
+2100
+],
+"stanford/medagentbench": [
+"Public",
+300
+],
+"swt-bench/swt-bench-verified": [
+"Public",
+433
+],
+"termigen/termigen-environments": [
+"Public",
+3566
+],
+"usaco/usaco": [
+"Public",
+304
+],
+"xlang/ds-1000": [
+"Public",
+1000
+],
+"ibragim-badertdinov/swe-rebench-07-2026": [
+"Public",
+111
+],
+"shiv-eshwar/lb6-dev-pilot-issue18-rewardkit": [
+"Public",
+12
+],
+"tbench-dw-a-dw_1784073139_2608908/dw-dataset": [
+"Public",
+1
+],
+"tbench-dw2-a-dw2_1784073189_2619080/dw2-dataset": [
+"Public",
+1
+],
+"tbench-dw3-a-dw3_1784073253_2627946/dw3-dataset": [
+"Public",
+1
+],
+"tbench-lbtest-a-xt_1784071893_2521724/xt-dataset": [
+"Public",
+1
+],
+"tbench-lbtest-lb_1784071796_2517183/lbtest-dataset": [
+"Public",
+1
+],
+"tbench-pubcrack-a-pc_1784073251/pubcrack-dataset": [
+"Public",
+1
+],
+"tbench-rv-a-rv_1784073719_2926154/rv-dataset": [
+"Public",
+1
+],
+"tbench-up-a-up_1784106749_3678887/up-dataset": [
+"Public",
+1
+],
+"tbench-up2-a-up2_1784107856_4005736/up2-dataset": [
+"Public",
+1
+],
+"tbench-up3-a-up3_1784108188_141385/up3-dataset": [
+"Public",
+1
+],
+"tbench-up4-a-up4_1784108341_146593/up4-dataset": [
+"Public",
+1
+]
+}

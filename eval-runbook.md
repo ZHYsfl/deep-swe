@@ -148,6 +148,48 @@ uvx --from mini-swe-agent --with programbench mini-extra programbench \
 
 ## 5. 已调研未跑（候选）
 
+**Hub 全量普查（2026-07-27，250 个数据集）**：清单存 `hub-datasets-2026-07-27.json`
+（名字/可见性/任务数）。注意其中 ~90 个是 openthoughts/tasktrove 的实验变体、
+~10 个是 tbench-* 单题功能测试残留，实际独立 bench 约 80 个。按研究目标筛选：
+
+第一梯队（补现有矩阵空缺）：
+
+- ~~openthoughts/tasktrove 全系~~（2026-07-27 决定弃用）：RL 训练集出身，有数据污染
+  风险和弱 verifier 问题，绝对分无公信力；虽然同序对照下相对差仍无偏，但天花板
+  效应可能压缩组间差，且对外讲实验时"用了别人的训练集"是额外的辩护负担。
+- **swe-bench/swe-smith**（Hub 上 100 题样本；完整版可生成 50k）：同 repo 多任务，
+  正是 §6 说的"SWE-bench repo 聚类"思路的放大版——repo 内经验复用的标准场景，
+  且同 repo 共享镜像，成本低。
+- **termigen/termigen-environments**（3566 题，UCSB，11 个类别）：TMax 同族终端任务，
+  全部环境经过验证（arXiv 2602.07274）。类别标签适合做域内复用切片；
+  终端题成本实测极低（TMax $0.002/题）。注意 intricate 题镜像构建慢，先 warm build。
+- **userbench/UserBench**（620 题，含 train400 变体）：tau3 同族多轮用户模拟，
+  量多一倍，可给多轮场景补统计功效。
+- **abundant/swe-gen-{rust,go,java,js,cpp}**（各 ~1000 题）：swe-marathon 同门，
+  按语言切片的生成式 SWE 任务。
+
+第二梯队（特定机制验证）：
+
+- **gorilla/bfcl**（3641 题函数调用）：短平快，测"工具 schema 记忆"，成本极低；
+  但 episode 太短，测不了长程。
+- **reasoning-gym/reasoning-gym-{easy,hard}**：程序化生成、算法可验证，无限同族题，
+  适合当技能记忆的对照组。
+- **openthoughts/openthoughts-tblite**（100 题，难度标定终端 bench）：快速校准难度用。
+- **harbor-index/harbor-index-1.0**（82 题）：跨 bench 策展索引，广度抽样。
+
+明确排除：
+
+- xlang-ai/osworld-verified（361）、apple/mmau（1000）、mmtb/multimedia-terminalbench（105）：
+  需要视觉，deepseek-v4-flash 无视觉能力（swe-marathon 的 CUA 已实测 HARD FAIL）
+- gaia/gaia（165）：需要真联网检索
+- openai/swe-lancer-*：单题成本美元级，且评测流程绑定 OpenAI 生态
+- tasktrove 的 mix-h* / exp-rle-* 变体：别人 RL 实验的混合配方，噪声大，只取
+  rpt 主干和 curriculum 系列
+- openai/simpleqa、aime、gpqa-diamond、strongreject 等：QA/数学/安全类，非 agentic
+  工程任务，与经验复用研究无关
+
+单个 bench 调研笔记：
+
 - **FrontierSWE**（Proximal，17 题 × 20h，连续分 0~1，mean@5/best@5）：Harbor 编排，
   repo: Proximal-Labs/frontier-swe。超长程 + 开放式研究难度；部分题要 GPU。memory 研究的
   现成案例库（Opus 丢进度、模型自发作弊 6/30）。跑法同 Harbor 数据集，注意成本。
@@ -313,6 +355,36 @@ harbor run -d sierra-research/tau3-bench -a mini-swe-agent -m openai/deepseek-v4
   单独一个 proxy 端口/模型别名
 - 数据集已全量下载在 `/tmp/tau3-bench/`（`--allow-agent-host` 的 UserWarning 无害，
   因网络本来就是 public）
+
+## 10. TMax-15K-Harbor（Allen AI，Harbor Hub 数据集）
+
+Allen AI 为 RL 训练造的终端 agent 任务集（arXiv 2606.23321），**14,601 题**，Harbor
+原生格式，Hub 上 `tmax/TMax-15K-Harbor`（Public）。legacy 10k 自包含题 + 5k
+"intricate" 多模态题（带 video.mp4 等 fixture，C/Go/数据工程等多域）。verifier 为
+程序化测试，无需 LLM judge。任务元数据带 domain/skill_type/task_complexity 标签，
+适合按难度/领域切片采样。
+
+```bash
+harbor run -d tmax/TMax-15K-Harbor -a mini-swe-agent -m openai/deepseek-v4-flash \
+  -l 3 -n 3 -y --ae OPENAI_BASE_URL=http://host.docker.internal:4000 --ae OPENAI_API_KEY=dummy \
+  --allow-agent-host host.docker.internal
+# 补跑单题：-i 'tmax/task_000996_1eadce64'（过滤词必须带 tmax/ 前缀全名，glob 不猜前缀）
+```
+
+冒烟结果（2026-07-27，3 题，job `jobs/2026-07-27__00-21-13/`）：
+
+- `-l 3` 只下载选中的 3 题到 `~/.cache/harbor/tasks/packages/tmax/`，不拉全量 14.6k——
+  大规模跑也可按需取
+- **1/2 有效题通过**：task_009460（写 audit_report）reward=1.0；
+  task_003301 reward=0.0
+- task_000996（intricate 题：C 语言 ETL+视频处理管线）连续两次环境启动 600s 超时——
+  Dockerfile FROM ubuntu:22.04 裸装 Go/Rust/ffmpeg 全套，实测构建 ~20 分钟；
+  `--timeout-multiplier 3` 第三次补跑环境起来了，但 reward=0.0（能力失败，20 次调用
+  $0.0034）。**教训：intricate 题首跑预留 ~20min 镜像构建时间，大规模采样前应先批量
+  warm build，否则一半墙钟时间耗在建环境上**
+- 三题合计：1/3 通过，58 次调用 **$0.007**。单题成本极低（cache_read 占 93%）
+- 注意：这批任务 `allow_internet = true`；超时每题自定（task_000996 是 agent 600s /
+  verifier 120s），跑大规模时注意任务间配置不一致
 
 ## 分数可信度提醒（BenchJack 攻击面）
 
