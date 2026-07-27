@@ -413,6 +413,52 @@ harbor run -d swe-bench/swe-smith -a mini-swe-agent -m openai/deepseek-v4-flash 
 - 数据集结构提示：任务名 `repo__commit.combine_file__<hash>`，按名字前缀即可
   聚类出"同 repo 任务簇"做 episode 序列
 
+## 12. abundant/swe-gen-js 冒烟（Harbor Hub）
+
+真实 OSS repo 的真实 issue 修复（biome、eslint 等），各语言 1000 题（js/go/rust/
+java/cpp）。镜像 FROM ubuntu 现场装工具链——**重构建型**，和 swe-smith 的预构建
+拉取式形成鲜明对照。
+
+冒烟结果（2026-07-27，3 题，jobs `01-49-23` / `12-47-31`）：
+
+- **2/3 通过**：eslint-17086 ✅、biome-8201 ✅（给 biome 实现 noTernary lint 规则）、
+  biome-8597 ❌
+- 成本：eslint 单题 113 次调用 **$0.034**；biome 两题 311 次调用 **$0.086**。
+  **单题 token 约为 swe-smith 合成题的 10 倍**（真实 repo 上下文大、试错多）——
+  真实修复任务正是 memory 机制最该省钱的场景
+- 工程教训三连：
+  1. 任务 Dockerfile 装 rustup/toolchain 时拉外网，**梯子不开必挂**（auth.docker.io
+     EOF、static.rust-lang.org SSL_ERROR_SYSCALL 都是这个原因）
+  2. 默认 600s 环境超时对重构建题不够，需 `--timeout-multiplier 3`；biome-8201
+     在 1x 下还吃了 AgentTimeoutError（600s 不够做真实修复）
+  3. 跑前必须确认 proxy 在线——一次 proxy 掉线导致两题
+     NonZeroAgentExitCodeError 白跑 30 分钟构建（环境虽白建但镜像缓存留下了，
+     不算纯亏）
+
+## 13. 磁盘纪律（2026-07-27 事故与护栏）
+
+**事故**：跑 TMax/swe-gen 期间，任务镜像 FROM ubuntu 现场编译工具链（Go/Rust/
+ffmpeg），buildkit 缓存（10.7→53GB）+ per-trial 残留镜像只进不出，Docker Desktop
+的 `docker_data.vhdx` 胀到 **151.7GB**，C 盘耗尽（0 空闲）→ VHDX 读写 I/O 错误 →
+docker CLI SIGBUS、daemon 挂死。处置：删除 VHDX（全部镜像可重建，实验数据都在
+Ubuntu 文件系统里无损），disk image location 迁到 D 盘，C 盘回血 165.7GB。
+
+**教训**：
+
+- 查磁盘必须看 **Windows 侧 VHDX 所在盘**，WSL 内 `df /` 看到的是 Ubuntu 自己的盘，
+  和 Docker Desktop 的存储是两回事
+- VHDX 只涨不缩：docker 内部 prune 后空间只还给 docker 自己，要真正还宿主盘需
+  compact VHDX（或干脆删除重建）
+- 重构建型任务集（TMax intricate、swe-gen）是磁盘大户；预构建拉取型（swe-bench 系）
+  友好得多
+
+**护栏（已生效）**：
+
+- `scripts/docker-prune.sh`：buildkit 缓存只留 24h + dangling 镜像全删，
+  日志落 `logs/docker-prune.log`
+- Windows 任务计划 `DockerPrune-Daily`：每天 04:37 经 `wsl -d Ubuntu` 执行上面的脚本
+- 冒烟新 bench 前先 `docker system df` 看一眼存量，跑完随手 prune
+
 ## 分数可信度提醒（BenchJack 攻击面）
 
 Harbor 默认 agent 和 verifier 同容器共享文件系统：agent 可预写 reward 文件、劫持
