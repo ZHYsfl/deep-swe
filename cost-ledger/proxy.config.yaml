@@ -1,0 +1,18 @@
+# LiteLLM proxy 配置：上游 DeepSeek，回调落 ledger.jsonl
+# 启动：cd cost-ledger && set -a && source ../.env && set +a &&
+#       .venv/bin/litellm --config proxy.config.yaml --port 4000
+
+model_list:
+  - model_name: deepseek-v4-flash          # 对外暴露的名字
+    litellm_params:
+      model: deepseek/deepseek-v4-flash    # litellm 内部路由到 DeepSeek 官方 API
+      api_key: os.environ/DEEPSEEK_API_KEY
+
+  - model_name: kimi-k2.7-code             # Kimi 走 OpenAI 兼容端点（国际站，USD 计价）
+    litellm_params:
+      model: openai/kimi-k2.7-code
+      api_base: https://api.moonshot.ai/v1  # 国内站账号改成 https://api.moonshot.cn/v1
+      api_key: os.environ/MOONSHOT_API_KEY
+
+litellm_settings:
+  callbacks: ledger.callback.ledger_logger

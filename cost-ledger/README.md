@@ -104,7 +104,7 @@ harbor run ... --ae OPENAI_BASE_URL=http://host.docker.internal:4000 \
 | `model` | 请求模型名 |
 | `counts.input_fresh` | 未命中缓存的输入 token（memory 净贡献看这里） |
 | `counts.input_cache_read` | 命中前缀缓存的输入 token |
-| `counts.input_cache_write` | 缓存写入（Anthropic 专属，DeepSeek 恒 0） |
+| `counts.input_cache_write` | 缓存写入（DeepSeek/Kimi 自动缓存恒 0，字段为 schema 稳定性保留） |
 | `counts.output` / `output_reasoning` | 输出 / 其中 reasoning 部分 |
 | `run` / `task` / `episode` / `step` | 请求头注入的归属标签 |
 | `latency_ms` / `finish_reason` | 延迟 / 结束原因（error 表示失败调用） |
@@ -119,3 +119,16 @@ harbor run ... --ae OPENAI_BASE_URL=http://host.docker.internal:4000 \
 - proxy 未启用鉴权（本地回路专用，不要暴露到网络）
 - DeepSeek 的缓存是其服务端自动 context caching，块粒度 64 token，小 prompt 不命中
 - 失败调用也会落一行（`finish_reason=error`，token 计数为实际已发生的部分）
+
+## 支持的 provider usage 格式
+
+`normalize_usage` 只支持 **OpenAI chat completions 规范**，目标 provider 是
+DeepSeek 和 Kimi（fixture + 来源 URL 见 `tests/test_normalize_usage.py`，
+`python tests/test_normalize_usage.py` 可跑）：
+
+- **DeepSeek**：`prompt_cache_hit/miss_tokens` 互斥分解，hit + miss == prompt_tokens
+- **Kimi**：`cached_tokens` 可能在顶层（官方 schema）也可能在 `prompt_tokens_details`（K3 实测），两处都兜底；命中部分 ⊆ prompt_tokens
+- 两家都是服务端自动前缀缓存，无写缓存概念；reasoning 已含在输出总数内，拆出仅作明细
+
+接新 provider 时只要它也走 chat completions 规范且缓存命中在
+`prompt_tokens_details.cached_tokens`，无需改代码；否则先补 fixture 再改。

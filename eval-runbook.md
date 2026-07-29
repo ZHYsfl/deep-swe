@@ -448,16 +448,20 @@ Ubuntu 文件系统里无损），disk image location 迁到 D 盘，C 盘回血
 - 查磁盘必须看 **Windows 侧 VHDX 所在盘**，WSL 内 `df /` 看到的是 Ubuntu 自己的盘，
   和 Docker Desktop 的存储是两回事
 - VHDX 只涨不缩：docker 内部 prune 后空间只还给 docker 自己，要真正还宿主盘需
-  compact VHDX（或干脆删除重建）
+  compact VHDX（或干脆删除重建）。**迁移到 D 盘后同一天又涨到 112GB**（ biome 全量
+  重建的中间层），实际内容仅 4.7GB——搬家不解决问题，纪律才解决
+- docker system df 的数字也会"骗人"：那是 docker 内部视角，不是宿主盘文件体积
 - 重构建型任务集（TMax intricate、swe-gen）是磁盘大户；预构建拉取型（swe-bench 系）
   友好得多
 
-**护栏（已生效）**：
+**现行做法（2026-07-29 起）**：
 
-- `scripts/docker-prune.sh`：buildkit 缓存只留 24h + dangling 镜像全删，
-  日志落 `logs/docker-prune.log`
-- Windows 任务计划 `DockerPrune-Daily`：每天 04:37 经 `wsl -d Ubuntu` 执行上面的脚本
-- 冒烟新 bench 前先 `docker system df` 看一眼存量，跑完随手 prune
+- 曾配过自动护栏（每日 prune 脚本 + Windows 任务计划 + 评测感知检测），用户评估后
+  决定撤掉，已全量删除（脚本、日志、`DockerPrune-Daily` 任务）
+- 改回人工纪律：冒烟新 bench 前 `docker system df` 看存量；跑完一批随手
+  `docker builder prune`；定期用 powershell 看 VHDX 文件体积
+- 可选加固：Docker Desktop Settings → Resources 里的自动 TRIM/稀疏磁盘实验选项
+  （GUI 操作，能从根上让 VHDX 自动回缩）
 
 ## 分数可信度提醒（BenchJack 攻击面）
 
