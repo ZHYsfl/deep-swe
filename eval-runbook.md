@@ -463,6 +463,57 @@ Ubuntu 文件系统里无损），disk image location 迁到 D 盘，C 盘回血
 - 可选加固：Docker Desktop Settings → Resources 里的自动 TRIM/稀疏磁盘实验选项
   （GUI 操作，能从根上让 VHDX 自动回缩）
 
+## 14. 本地源码 mini-swe-agent × DeepSWE × cost-ledger 全链路（2026-07-29 打通）
+
+研究主线 harness：**改得到的 agent 源码 + 逐调用成本账本**，为记忆机制实验铺路。
+
+**架构**：`agents/mswea_local.py`（pier `--agent-import-path` 自定义 agent，继承内置
+MiniSweAgent）。三个机关：
+
+1. **本地源码安装**：pier 把 `install_spec()` 步骤原样内联进 Dockerfile 构建
+   （构建上下文只有 Dockerfile，无法 COPY），所以把本地源码（只留
+   pyproject/README/LICENSE/src，63KB tar.gz）base64 后按 ≤48KB 切块嵌进多个
+   RUN 步骤（**Dockerfile 单行硬上限 65535B**，v2 冒烟就死在这），最后一步解码
+   `uv tool install /tmp/mswea-src`。每次 run 重打包当前源码，源码改动 → spec
+   指纹变 → 镜像自动重建。改完即跑，不用 push fork。
+2. **计量接线**：`model_kwargs.api_base=http://host.docker.internal:4000`
+   （deepseek provider 保持 chat completions 协议，模型名上游剥离为
+   `deepseek-v4-flash` 正好匹配 proxy.config.yaml）+ 环境变量
+   `LEDGER_RUN`/`LEDGER_TASK` 注入 `X-Ledger-*` 请求头。
+3. **断网放行**：`network_allowlist()` 追加 `host.docker.internal`。
+
+**跑法**（proxy 需先起，§8；Docker Desktop 需开着）：
+
+```bash
+cd /home/zane/deep-swe
+PYTHONPATH=$PWD LEDGER_RUN=<batch> LEDGER_TASK=<task-id> \
+pier run -p tasks/<task-id> \
+  --agent-import-path agents.mswea_local:LocalMiniSweAgent \
+  --model deepseek/deepseek-v4-flash --env-file .env
+```
+
+**冒烟**（abs-module-cache-flags，`jobs/2026-07-29__21-06-32/`）：10m59s，
+F2P 0.550（11/20）、P2P 1.0、reward 0（对照 §1 原版 PyPI 安装：F2P 6/20，同 reward，
+差异属采样方差）。生成的 Dockerfile 里确认是 `uv tool install /tmp/mswea-src`。
+
+**计量验证（三处对齐）**：
+
+- 账本 152 次调用 ⇔ ATIF 152 个 agent step 全带 per-step metrics，1:1
+- ATIF/result.json：input 7,677,332（cached 7,618,944，**命中 99.2%**）、
+  output 34,315、cost $0.0391（mini 侧 litellm 价目）
+- 账本按 PRICE_TABLE 折算 $0.039–0.040，两个独立计价体系吻合
+
+**坑位备忘**：
+
+- **LEDGER_RUN 每次执行要换名**：v3（失败但 agent 跑了 37 次调用）与 v4 共用
+  run 名导致账本聚合时混入。要么 run 名唯一，要么分析时按时间窗切
+- 任务镜像删 VHDX 后不再本地缓存：首次跑某任务前 `docker pull` 其 base 镜像
+  （task.toml 的 docker_image 字段），否则构建期拉取撞 ECR TLS timeout（已遇到）
+- 磁盘：单任务约 15GB（base 3.9GB + agent 镜像 4.7GB + build cache 6.4GB），
+  117 题全量跑前必须定清理节奏（§13 人工纪律），pier 不自动删镜像
+- 输入侧 99% 靠 DeepSeek context caching 免费（152 step 新鲜输入仅 58k）：
+  "harness 结构红利"，不是 memory 功劳——论文证据要看 `input_fresh` 随 episode 递减
+
 ## 分数可信度提醒（BenchJack 攻击面）
 
 Harbor 默认 agent 和 verifier 同容器共享文件系统：agent 可预写 reward 文件、劫持
