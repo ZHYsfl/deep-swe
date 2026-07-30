@@ -479,7 +479,11 @@ MiniSweAgent）。三个机关：
 2. **计量接线**：`model_kwargs.api_base=http://host.docker.internal:4000`
    （deepseek provider 保持 chat completions 协议，模型名上游剥离为
    `deepseek-v4-flash` 正好匹配 proxy.config.yaml）+ 环境变量
-   `LEDGER_RUN`/`LEDGER_TASK` 注入 `X-Ledger-*` 请求头。
+   `LEDGER_RUN`/`LEDGER_TASK`/`LEDGER_EPISODE` 注入 `X-Ledger-*` 静态请求头；
+   `model_class` 挂 `minisweagent.models.ledger_model.LedgerLitellmModel`
+   （`mini-swe-agent/src/minisweagent/models/ledger_model.py`，未动上游），
+   逐 HTTP 调用盖 `X-Ledger-Step: N`（N 含重试）。注意 YAML 会把头值
+   `1` 解析成 int 导致 httpx 报错，LedgerLitellmModel 已统一转 str。
 3. **断网放行**：`network_allowlist()` 追加 `host.docker.internal`。
 
 **跑法**（proxy 需先起，§8；Docker Desktop 需开着）：
@@ -502,6 +506,8 @@ F2P 0.550（11/20）、P2P 1.0、reward 0（对照 §1 原版 PyPI 安装：F2P 
 - ATIF/result.json：input 7,677,332（cached 7,618,944，**命中 99.2%**）、
   output 34,315、cost $0.0391（mini 侧 litellm 价目）
 - 账本按 PRICE_TABLE 折算 $0.039–0.040，两个独立计价体系吻合
+- host 冒烟（`uv tool install -e ./mini-swe-agent` + 本地小任务穿 proxy，
+  run=step-test）：账本 step=1,2,3 递增、episode=1 落账，四标签全通
 
 **坑位备忘**：
 
